@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { Room } from "./entities/room.entity";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Room } from './entities/room.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RoomsService {
-
   constructor(
     @InjectRepository(Room) private roomRepository: Repository<Room>,
-  ) { }
+  ) {}
 
   create(createRoomDto: CreateRoomDto) {
     return 'This action adds a new room';

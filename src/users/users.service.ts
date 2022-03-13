@@ -11,8 +11,21 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  /**
+   * its about semantics and good practises. therefore i decided to create an extra method for signing up
+   * @param createUserDto
+   */
+  async signUp(createUserDto: CreateUserDto): Promise<User> {
+    return this.create(createUserDto);
+  }
+
+  /*
+   * register a user*/
+  private async create(createUserDto: CreateUserDto): Promise<User> {
+    //return this.userRepository.save(createUserDto);
+    const { username, password } = createUserDto;
+    const user = this.userRepository.create({ username, password });
+    return await this.userRepository.save(user);
   }
 
   findAll() {
