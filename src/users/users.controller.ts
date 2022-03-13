@@ -16,9 +16,15 @@ import { User } from './entities/user.entity';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  //and we get two oh one Created response with the created user
   @Post('signup')
   signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.signUp(createUserDto);
+  }
+
+  @Post('signin')
+  signIn(@Body() createUserDto: CreateUserDto): Promise<string> {
+    return this.usersService.signIn(createUserDto);
   }
 
   /*@Post()
