@@ -5,11 +5,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { FriendStatus } from './dto/get-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -58,7 +58,9 @@ export class UsersService {
     } else {
       throw new UnauthorizedException('Please check your login credentials');
     }
-  async create(user: CreateUserDto): Promise<User> {
+  }
+
+  async create2(user: CreateUserDto): Promise<User> {
     return await this.userRepository.save(user);
   }
 
