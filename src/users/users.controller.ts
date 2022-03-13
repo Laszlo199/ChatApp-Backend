@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -12,9 +11,20 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
+  /*@Get()
   findAll() {
     return this.usersService.findAll();
+  }
+
+   */
+
+  /**returns a list of all users with friend status
+   *
+   * @param id of a logged in user
+   */
+  @Get(':userId')
+  GetAll(@Param('id') id: number) {
+    return this.usersService.getAllUsers(id);
   }
 
   @Get(':id')
@@ -22,10 +32,12 @@ export class UsersController {
     return this.usersService.findOne(+id);
   }
 
+  /*
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
+  */
 
   @Delete(':id')
   remove(@Param('id') id: string) {
