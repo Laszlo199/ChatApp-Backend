@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column({ unique: true })
   username: string;
   @Column()
   password: string;

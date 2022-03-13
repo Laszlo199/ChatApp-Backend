@@ -1,15 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  //and we get two oh one Created response with the created user
+  @Post('signup')
+  signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.signUp(createUserDto);
+  }
+
+  @Post('signin')
+  signIn(@Body() createUserDto: CreateUserDto): Promise<string> {
+    return this.usersService.signIn(createUserDto);
+  }
+
+  /*@Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
-  }
+  }*/
 
   /*@Get()
   findAll() {
