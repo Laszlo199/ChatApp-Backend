@@ -34,8 +34,10 @@ export class RoomsService {
     return `This action updates a #${id} room`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+  async remove(id: number) {
+    const roomToRemove = await this.roomRepository.findOne({ id: id });
+    await this.roomRepository.remove(roomToRemove);
+    return roomToRemove;
   }
 
   async getAll(userId: number) {
