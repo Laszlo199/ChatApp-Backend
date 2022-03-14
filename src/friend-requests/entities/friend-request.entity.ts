@@ -1,11 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Room {
+export class FriendRequest {
   @PrimaryGeneratedColumn()
   id: number;
   @Column()
-  name: string;
+  senderId: number;
   @Column()
-  authorId: string;
+  receiverId: number;
+  @Column()
+  isAccepted: boolean;
 }
