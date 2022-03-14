@@ -40,9 +40,10 @@ export class UsersService {
     const users: GetUsersDto[] = [];
     //array with all friend requests
     const temp = await this.userRepository.find();
-    let status = FriendStatus.None;
+    let status;
 
     for (const user of temp) {
+      status = FriendStatus.None;
       //CASE: FRIENDS
       await this.requestRepository
         .find({
