@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { Room } from "./entities/room.entity";
-import { Repository } from "typeorm";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Room } from './entities/room.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RoomsService {
-
   constructor(
     @InjectRepository(Room) private roomRepository: Repository<Room>,
-  ) { }
+  ) {}
 
-  create(createRoomDto: CreateRoomDto) {
-    return 'This action adds a new room';
+  async create(createRoomDto: CreateRoomDto) {
+    return await this.roomRepository.save(createRoomDto);
   }
 
   findAll() {
@@ -30,5 +29,11 @@ export class RoomsService {
 
   remove(id: number) {
     return `This action removes a #${id} room`;
+  }
+
+  async getAll(userId: number) {
+    return await this.roomRepository.find({
+      where: { authorId: userId },
+    });
   }
 }
