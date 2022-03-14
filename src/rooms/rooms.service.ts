@@ -73,7 +73,7 @@ export class RoomsService {
           roomsToReturn.push({
             id: room.id,
             name: room.name,
-            author: user.username,
+            author: room.authorId == userId ? 'you' : user.username,
           }),
         );
     }
