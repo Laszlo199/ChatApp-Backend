@@ -22,9 +22,9 @@ export class UsersController {
    *
    * @param id of a logged in user
    */
-  @Get(':userId')
+  @Get('userId/:id')
   GetAll(@Param('id') id: number) {
-    return this.usersService.getAllUsers(id);
+    return this.usersService.getAllUsers(+id);
   }
 
   @Get(':id')
