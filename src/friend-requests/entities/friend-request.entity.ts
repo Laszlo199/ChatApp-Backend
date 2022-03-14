@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class FriendRequest {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
   @Column()
   senderId: number;
   @Column()
