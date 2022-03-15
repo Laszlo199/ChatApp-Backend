@@ -48,10 +48,14 @@ export class UsersService {
   /*
    * later we may change the name of dto to authCredentialsDto or something more descriptive */
   async signIn(createUserDto: CreateUserDto) {
-    const { username, password } = createUserDto;
-    const user = await this.userRepository.findOne(username);
+      const { username, password } = createUserDto;
+      const user = await this.userRepository.findOne({
+        where: {
+             username: username
+        }});
 
-    if (user && password === user.password) {
+
+    if (user && (password === user.password) ) {
       return user;
     } else {
       return null;
@@ -68,14 +72,14 @@ export class UsersService {
   }
 
   async findOne(username: string, password: string) {
-    const user = await this.userRepository.findOne(username);
+   /* const user = await this.userRepository.findOne({where: username: username});
 
     if (user && password === user.password) {
       return user;
     } else {
       return null;
       //throw new UnauthorizedException('Please check your login credentials');
-    }
+    }*/
   }
 
   update(id: number, UpdateUserDto) {
