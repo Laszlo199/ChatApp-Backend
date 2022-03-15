@@ -1,28 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
 import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Column, Repository } from 'typeorm';
 import { FriendRequest } from './entities/friend-request.entity';
-import { User } from '../users/entities/user.entity';
-import { from, of } from 'rxjs';
-import { GetUsersDto } from '../users/dto/get-users.dto';
+import { IFriendRequestRepository } from './border/friend-requestRepository.interface';
 
 @Injectable()
 export class FriendRequestsService {
-  constructor(
-    @InjectRepository(FriendRequest)
-    private requestRepository: Repository<FriendRequest>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {}
+  private friendRequestRepo: IFriendRequestRepository;
 
-  async create(createFriendRequestDto: CreateFriendRequestDto) {
-    return await this.requestRepository.save(createFriendRequestDto);
+  constructor(friendRequestRepository: IFriendRequestRepository) {
+    this.friendRequestRepo = friendRequestRepository;
+  }
+
+  async create(
+    senderId: number,
+    receiverId: number,
+    isAccepted: boolean,
+  ): Promise<FriendRequest> {
+    return this.friendRequestRepo.create(senderId, receiverId, isAccepted);
+  }
+
+  getFriendRequests(receiverId: number): Promise<FriendRequest[]> {
+    return this.friendRequestRepo.getFriendRequests(receiverId);
   }
 
   async findAll() {
-    return await this.requestRepository.find();
+    return 'hmm';
   }
 
   findOne(id: number) {
@@ -35,14 +37,5 @@ export class FriendRequestsService {
 
   remove(id: number) {
     return `This action removes a #${id} friendRequest`;
-  }
-
-  sendFriendRequest(loggedUserId: number, selectedUserId: number) {
-    const friendRequest: FriendRequest = {
-      senderId: loggedUserId,
-      receiverId: selectedUserId,
-      isAccepted: false,
-    };
-    return from(this.requestRepository.save(friendRequest));
   }
 }
