@@ -1,4 +1,4 @@
-import { FriendRequest } from '../entities/friend-request.entity';
+import { FriendRequest } from '../../core/friend-request.entity';
 
 export interface IFriendRequestRepository {
   create(
