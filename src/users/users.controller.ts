@@ -17,12 +17,12 @@ export class UsersController {
 
   //and we get two oh one Created response with the created user
   @Post('signup')
-  signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
+  signUp(@Body() createUserDto: CreateUserDto) {
     return this.usersService.signUp(createUserDto);
   }
 
-  @Post('signin')
-  signIn(@Body() createUserDto: CreateUserDto): Promise<string> {
+  @Post()
+  signIn(@Body() createUserDto: CreateUserDto) {
     return this.usersService.signIn(createUserDto);
   }
 
@@ -48,8 +48,11 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(
+    @Param('username') username: string,
+    @Param('password') pass: string,
+  ) {
+    return this.usersService.findOne(username, pass);
   }
 
   /*

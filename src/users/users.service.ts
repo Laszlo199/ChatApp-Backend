@@ -47,16 +47,15 @@ export class UsersService {
 
   /*
    * later we may change the name of dto to authCredentialsDto or something more descriptive */
-  async signIn(createUserDto: CreateUserDto): Promise<string> {
+  async signIn(createUserDto: CreateUserDto) {
     const { username, password } = createUserDto;
-    // first of all I wanna check if such user exists within DB
-    const user = await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne(username);
 
-    //https://docs.nestjs.com/security/encryption-and-hashing
     if (user && password === user.password) {
-      return 'success';
+      return user;
     } else {
-      throw new UnauthorizedException('Please check your login credentials');
+      return null;
+      //throw new UnauthorizedException('Please check your login credentials');
     }
   }
 
@@ -68,8 +67,15 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(username: string, password: string) {
+    const user = await this.userRepository.findOne(username);
+
+    if (user && password === user.password) {
+      return user;
+    } else {
+      return null;
+      //throw new UnauthorizedException('Please check your login credentials');
+    }
   }
 
   update(id: number, UpdateUserDto) {
