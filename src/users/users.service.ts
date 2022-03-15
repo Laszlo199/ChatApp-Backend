@@ -21,41 +21,33 @@ export class UsersService {
    * its about semantics and good practises. therefore i decided to create an extra method for signing up
    * @param createUserDto
    */
-  async signUp(createUserDto: CreateUserDto): Promise<User> {
+  signUp(createUserDto: CreateUserDto): Promise<User> {
     return this.create(createUserDto);
   }
 
   /*
    * register a user*/
   private async create(createUserDto: CreateUserDto): Promise<User> {
-    //return this.userRepository.save(createUserDto);
     const { username, password } = createUserDto;
-
     try {
-      const user = this.userRepository.create({ username, password });
-      return await this.userRepository.save(user);
+      //const user = this.userRepository.create({ username, password });
+      return await this.userRepository.save({ username, password });
     } catch (error) {
       console.log(error.code);
-      if (error.code === 'SQLITE_CONSTRAINT') {
-        //duplicate username
-        throw new ConflictException('Username already exists');
-      } else {
-        throw new InternalServerErrorException();
-      }
     }
   }
 
   /*
    * later we may change the name of dto to authCredentialsDto or something more descriptive */
   async signIn(createUserDto: CreateUserDto) {
-      const { username, password } = createUserDto;
-      const user = await this.userRepository.findOne({
-        where: {
-             username: username
-        }});
+    const { username, password } = createUserDto;
+    const user = await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
 
-
-    if (user && (password === user.password) ) {
+    if (user && password === user.password) {
       return user;
     } else {
       return null;
@@ -72,7 +64,7 @@ export class UsersService {
   }
 
   async findOne(username: string, password: string) {
-   /* const user = await this.userRepository.findOne({where: username: username});
+    /* const user = await this.userRepository.findOne({where: username: username});
 
     if (user && password === user.password) {
       return user;

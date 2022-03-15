@@ -16,7 +16,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   //and we get two oh one Created response with the created user
-  @Post('signup')
+  @Post('/signup')
   signUp(@Body() createUserDto: CreateUserDto) {
     return this.usersService.signUp(createUserDto);
   }
