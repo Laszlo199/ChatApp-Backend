@@ -47,25 +47,18 @@ export class UsersService {
       //CASE: FRIENDS
       await this.requestRepository
         .find({
-          where: {
-            senderId: user.id,
-            receiverId: loggedUserId,
-            isAccepted: true,
-          },
-        })
-        .then((result) => {
-          if (result.length > 0) {
-            status = FriendStatus.Friends;
-          }
-        });
-      //CASE: FRIENDS
-      await this.requestRepository
-        .find({
-          where: {
-            senderId: loggedUserId,
-            receiverId: user.id,
-            isAccepted: true,
-          },
+          where: [
+            {
+              senderId: user.id,
+              receiverId: loggedUserId,
+              isAccepted: true,
+            },
+            {
+              senderId: loggedUserId,
+              receiverId: user.id,
+              isAccepted: true,
+            },
+          ],
         })
         .then((result) => {
           if (result.length > 0) {
