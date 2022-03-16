@@ -47,7 +47,7 @@ export class friendRequestGateway {
   @SubscribeMessage('updateFriendRequest')
   update(@MessageBody() updateFriendRequestDto: UpdateFriendRequestDto) {
     return this.friendRequestService.update(
-      updateFriendRequestDto.id,
+      updateFriendRequestDto.senderId,
       updateFriendRequestDto,
     );
   }
