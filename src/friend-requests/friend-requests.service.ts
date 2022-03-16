@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateFriendRequestDto } from '../friend-requests/dto/update-friend-request.dto';
-import { FriendRequest } from '../core/friend-request.entity';
-import { IFriendRequestRepository } from './border/friend-requestRepository.interface';
+import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
+import { FriendRequest } from './entitites/friend-request.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FriendRequestsService {
-  private friendRequestRepo: IFriendRequestRepository;
-
-  constructor(friendRequestRepository: IFriendRequestRepository) {
-    this.friendRequestRepo = friendRequestRepository;
-  }
+  constructor(
+    @InjectRepository(FriendRequest)
+    private friendRequestRepo: Repository<FriendRequest>,
+  ) {}
 
   async create(
     senderId: number,
@@ -19,8 +19,8 @@ export class FriendRequestsService {
     return this.friendRequestRepo.create(senderId, receiverId, isAccepted);
   }
 
-  getFriendRequests(receiverId: number): Promise<FriendRequest[]> {
-    return this.friendRequestRepo.getFriendRequests(receiverId);
+  getFriendRequests(receiverId: number): Promise<FriendRequest | undefined> {
+    return this.friendRequestRepo.findOne(receiverId);
   }
 
   async findAll() {
