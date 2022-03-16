@@ -23,13 +23,13 @@ export class friendRequestGateway {
   constructor(private readonly friendRequestService: FriendRequestsService) {}
 
   @SubscribeMessage('createFriendRequest')
-  create(@Body() createFriendRequestDto: CreateFriendRequestDto) {
+  create(@MessageBody() createFriendRequestDto: CreateFriendRequestDto) {
     return this.friendRequestService.create(createFriendRequestDto);
   }
 
   @SubscribeMessage(':receiverId')
   getFriendRequests(
-    @Param('receiverId') receiverId: number,
+    @MessageBody('receiverId') receiverId: number,
   ): Promise<FriendRequest> {
     return this.friendRequestService.getFriendRequests(receiverId);
   }
