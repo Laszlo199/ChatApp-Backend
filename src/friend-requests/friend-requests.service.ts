@@ -3,6 +3,7 @@ import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
 import { FriendRequest } from './entitites/friend-request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
 
 @Injectable()
 export class FriendRequestsService {
@@ -12,14 +13,17 @@ export class FriendRequestsService {
   ) {}
 
   async create(
-    senderId: number,
-    receiverId: number,
-    isAccepted: boolean,
+    createFriendRequestDto: CreateFriendRequestDto,
   ): Promise<FriendRequest> {
-    return this.friendRequestRepo.create(senderId, receiverId, isAccepted);
+    const { senderId, receiverId, isAccepted } = createFriendRequestDto;
+    try {
+      return this.friendRequestRepo.save({ senderId, receiverId, isAccepted });
+    } catch (error) {
+      console.log('I dont create new friend request haha');
+    }
   }
 
-  getFriendRequests(receiverId: number): Promise<FriendRequest | undefined> {
+  getFriendRequests(receiverId: number): Promise<FriendRequest> {
     return this.friendRequestRepo.findOne(receiverId);
   }
 

@@ -22,19 +22,15 @@ export class friendRequestGateway {
 
   constructor(private readonly friendRequestService: FriendRequestsService) {}
 
-  @SubscribeMessage('createChat')
+  @SubscribeMessage('createFriendRequest')
   create(@Body() createFriendRequestDto: CreateFriendRequestDto) {
-    return this.friendRequestService.create(
-      createFriendRequestDto.senderId,
-      createFriendRequestDto.receiverId,
-      createFriendRequestDto.isAccepted,
-    );
+    return this.friendRequestService.create(createFriendRequestDto);
   }
 
   @SubscribeMessage(':receiverId')
   getFriendRequests(
     @Param('receiverId') receiverId: number,
-  ): Promise<FriendRequest[]> {
+  ): Promise<FriendRequest> {
     return this.friendRequestService.getFriendRequests(receiverId);
   }
 
