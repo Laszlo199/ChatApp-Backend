@@ -8,8 +8,6 @@ import { Server } from 'net';
 import { FriendRequestsService } from './friend-requests.service';
 import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
 import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
-import { Body, Get, Param } from '@nestjs/common';
-import { FriendRequest } from './entitites/friend-request.entity';
 
 @WebSocketGateway({
   cors: {
@@ -24,13 +22,11 @@ export class friendRequestGateway {
 
   @SubscribeMessage('createFriendRequest')
   create(@MessageBody() createFriendRequestDto: CreateFriendRequestDto) {
-    return this.friendRequestService.create(createFriendRequestDto);
+    return this.server.emit(typeof createFriendRequestDto);
   }
 
   @SubscribeMessage(':receiverId')
-  getFriendRequests(
-    @MessageBody('receiverId') receiverId: number,
-  ): Promise<FriendRequest> {
+  getFriendRequests(@MessageBody('receiverId') receiverId: number) {
     return this.friendRequestService.getFriendRequests(receiverId);
   }
 
@@ -47,7 +43,7 @@ export class friendRequestGateway {
   @SubscribeMessage('updateFriendRequest')
   update(@MessageBody() updateFriendRequestDto: UpdateFriendRequestDto) {
     return this.friendRequestService.update(
-      updateFriendRequestDto.senderId,
+      updateFriendRequestDto.id,
       updateFriendRequestDto,
     );
   }
