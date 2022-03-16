@@ -19,12 +19,16 @@ export class FriendRequestsService {
     try {
       return this.friendRequestRepo.save({ senderId, receiverId, isAccepted });
     } catch (error) {
-      console.log('I dont create new friend request haha');
+      console.log('I have not created new friend request...');
     }
   }
 
   getFriendRequests(receiverId: number): Promise<FriendRequest> {
-    return this.friendRequestRepo.findOne(receiverId);
+    try {
+      return this.friendRequestRepo.findOne(receiverId);
+    } catch (error) {
+      console.log('Woops');
+    }
   }
 
   async findAll() {
