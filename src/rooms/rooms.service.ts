@@ -19,7 +19,9 @@ export class RoomsService {
   ) {}
 
   async create(createRoomDto: CreateRoomDto) {
-    return await this.roomRepository.save(createRoomDto);
+    return await this.roomRepository
+      .save(createRoomDto)
+      .catch((error) => console.log(error.code + ' ' + error.message));
   }
 
   async findAll() {

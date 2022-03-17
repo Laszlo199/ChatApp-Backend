@@ -11,7 +11,8 @@ import { User } from '../../users/entities/user.entity';
 export class Room {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+
+  @Column({ unique: true })
   name: string;
   @Column()
   authorId: number;
