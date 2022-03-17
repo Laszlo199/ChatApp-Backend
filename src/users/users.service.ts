@@ -8,13 +8,19 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
+
 import { FriendStatus } from './dto/get-users.dto';
+import { FriendStatus, GetUsersDto } from './dto/get-users.dto';
+import { FriendRequest } from '../friend-requests/entities/friend-request.entity';
+
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(FriendRequest)
+    private requestRepository: Repository<FriendRequest>,
   ) {}
 
   /**
@@ -82,12 +88,76 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  getAllUsers(id) {
-    return [
-      { id: 1, username: 'Maya', status: FriendStatus.InvitationReceived },
-      { id: 2, username: 'John', status: FriendStatus.Friends },
-      { id: 3, username: 'Tonny78', status: FriendStatus.InvitationSent },
-      { id: 4, username: 'Kim', status: FriendStatus.None },
-    ];
+  async getAllUsers(loggedUserId) {
+    //array that will be returned:
+    const users: GetUsersDto[] = [];
+    //array with all friend requests
+    const temp = await this.userRepository.find();
+    let status;
+
+    for (const user of temp) {
+      status = FriendStatus.None;
+      //CASE: FRIENDS
+      await this.requestRepository
+        .find({
+          where: [
+            {
+              senderId: user.id,
+              receiverId: loggedUserId,
+              isAccepted: true,
+            },
+            {
+              senderId: loggedUserId,
+              receiverId: user.id,
+              isAccepted: true,
+            },
+          ],
+        })
+        .then((result) => {
+          if (result.length > 0) {
+            status = FriendStatus.Friends;
+          }
+        });
+
+      //CASE: INVITATION RECEIVED
+      await this.requestRepository
+        .find({
+          where: {
+            senderId: user.id,
+            receiverId: loggedUserId,
+            isAccepted: false,
+          },
+        })
+        .then((result) => {
+          if (result.length > 0) {
+            status = FriendStatus.InvitationReceived;
+          }
+        });
+
+      //CASE: INVITATION SENT
+      await this.requestRepository
+        .find({
+          where: {
+            senderId: loggedUserId,
+            receiverId: user.id,
+            isAccepted: false,
+          },
+        })
+        .then((result) => {
+          if (result.length > 0) {
+            status = FriendStatus.InvitationSent;
+          }
+        });
+
+      if (user.id != loggedUserId) {
+        users.push({
+          id: user.id,
+          username: user.username,
+          status: status,
+        });
+      }
+    }
+
+    return users;
   }
 }

@@ -20,6 +20,15 @@ export class RoomsController {
     return this.roomsService.create(createRoomDto);
   }
 
+  /**
+   * returns a list of all rooms belonging to that user or their friends
+   * @param id
+   */
+  @Get('userId/:id')
+  getAll(@Param('id') id: number) {
+    return this.roomsService.getAll(+id);
+  }
+
   @Get()
   findAll() {
     return this.roomsService.findAll();
