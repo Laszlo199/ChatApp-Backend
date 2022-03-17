@@ -29,7 +29,7 @@ export class friendRequestGateway {
     );
   }
 
-  @SubscribeMessage(':receiverId')
+  @SubscribeMessage('getFriendRequest')
   async getFriendRequests(
     @MessageBody('receiverId') createFriendRequestDto: CreateFriendRequestDto,
   ) {
