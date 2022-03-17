@@ -53,11 +53,11 @@ export class friendRequestGateway {
   }
 
   @SubscribeMessage('updateFriendRequest')
-  update(@MessageBody() updateFriendRequestDto: UpdateFriendRequestDto) {
-    return this.friendRequestService.update(
-      updateFriendRequestDto.id,
-      updateFriendRequestDto,
-    );
+  update(
+    @MessageBody() id: number,
+    updateFriendRequestDto: UpdateFriendRequestDto,
+  ) {
+    return this.friendRequestService.update(id, updateFriendRequestDto);
   }
 
   @SubscribeMessage('removeFriendRequest')

@@ -40,7 +40,7 @@ export class FriendRequestsService {
   }
 
   update(id: number, updateFriendRequestDto: UpdateFriendRequestDto) {
-    return `This action updates a #${id} friendRequest`;
+    return this.friendRequestRepo.update(id, updateFriendRequestDto);
   }
 
   remove(id: number) {
