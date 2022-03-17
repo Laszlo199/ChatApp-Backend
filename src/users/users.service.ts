@@ -8,11 +8,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-
-import { FriendStatus } from './dto/get-users.dto';
 import { FriendStatus, GetUsersDto } from './dto/get-users.dto';
 import { FriendRequest } from '../friend-requests/entities/friend-request.entity';
-
 
 @Injectable()
 export class UsersService {

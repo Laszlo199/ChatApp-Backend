@@ -19,8 +19,6 @@ export class ChatsGateway {
   @SubscribeMessage('createChat')
   create(@MessageBody() createChatDto: CreateChatDto) {
     this.server.emit(createChatDto.roomName, createChatDto);
-   // this.server.emit(createChatDto.roomId.toString(), createChatDto);
-    // return this.chatsService.create(createChatDto);
   }
 
   @SubscribeMessage('findAllChats')
