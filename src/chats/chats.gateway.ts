@@ -1,9 +1,4 @@
-import {
-  WebSocketGateway,
-  SubscribeMessage,
-  MessageBody,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from "@nestjs/websockets";
 import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
@@ -11,6 +6,7 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({ cors: true })
 export class ChatsGateway {
+
   @WebSocketServer()
   server: Server;
 

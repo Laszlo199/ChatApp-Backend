@@ -1,18 +1,10 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-
-import { FriendStatus } from './dto/get-users.dto';
 import { FriendStatus, GetUsersDto } from './dto/get-users.dto';
 import { FriendRequest } from '../friend-requests/entities/friend-request.entity';
-
 
 @Injectable()
 export class UsersService {
@@ -23,45 +15,7 @@ export class UsersService {
     private requestRepository: Repository<FriendRequest>,
   ) {}
 
-  /**
-   * its about semantics and good practises. therefore i decided to create an extra method for signing up
-   * @param createUserDto
-   */
-  signUp(createUserDto: CreateUserDto): Promise<User> {
-    return this.create(createUserDto);
-  }
-
-  /*
-   * register a user*/
-  private async create(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password } = createUserDto;
-    try {
-      //const user = this.userRepository.create({ username, password });
-      return await this.userRepository.save({ username, password });
-    } catch (error) {
-      console.log(error.code);
-    }
-  }
-
-  /*
-   * later we may change the name of dto to authCredentialsDto or something more descriptive */
-  async signIn(createUserDto: CreateUserDto) {
-    const { username, password } = createUserDto;
-    const user = await this.userRepository.findOne({
-      where: {
-        username: username,
-      },
-    });
-
-    if (user && password === user.password) {
-      return user;
-    } else {
-      return null;
-      //throw new UnauthorizedException('Please check your login credentials');
-    }
-  }
-
-  async create2(user: CreateUserDto): Promise<User> {
+  async create(user: CreateUserDto): Promise<User> {
     return await this.userRepository.save(user);
   }
 
@@ -69,15 +23,8 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOne(username: string, password: string) {
-    /* const user = await this.userRepository.findOne({where: username: username});
-
-    if (user && password === user.password) {
-      return user;
-    } else {
-      return null;
-      //throw new UnauthorizedException('Please check your login credentials');
-    }*/
+  findOne(id: number) {
+    return `This action returns a #${id} user`;
   }
 
   update(id: number, UpdateUserDto) {

@@ -12,7 +12,6 @@ import { GetRoomsDto } from './dto/get-rooms.dto';
 export class RoomsService {
   constructor(
     @InjectRepository(Room) private roomRepository: Repository<Room>,
-
     @InjectRepository(FriendRequest)
     private requestRepository: Repository<FriendRequest>,
     @InjectRepository(User)

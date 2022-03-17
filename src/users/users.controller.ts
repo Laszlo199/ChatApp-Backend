@@ -1,35 +1,15 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  //and we get two oh one Created response with the created user
-  @Post('/signup')
-  signUp(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.signUp(createUserDto);
-  }
-
   @Post()
-  signIn(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.signIn(createUserDto);
-  }
-
-  /*@Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
-  }*/
+  }
 
   /*@Get()
   findAll() {
@@ -48,11 +28,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(
-    @Param('username') username: string,
-    @Param('password') pass: string,
-  ) {
-    return this.usersService.findOne(username, pass);
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(+id);
   }
 
   /*
