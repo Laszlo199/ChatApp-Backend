@@ -13,7 +13,7 @@ export class ChatsService {
   ) {}
 
   create(createChatDto: CreateChatDto) {
-    return 'This action adds a new chat';
+    return this.chatRepository.save(createChatDto);
   }
 
   findAll() {
