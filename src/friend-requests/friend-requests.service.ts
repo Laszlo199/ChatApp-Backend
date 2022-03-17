@@ -44,6 +44,6 @@ export class FriendRequestsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} friendRequest`;
+    return this.friendRequestRepo.delete(id);
   }
 }
