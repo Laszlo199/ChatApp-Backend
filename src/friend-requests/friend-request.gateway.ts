@@ -21,13 +21,25 @@ export class friendRequestGateway {
   constructor(private readonly friendRequestService: FriendRequestsService) {}
 
   @SubscribeMessage('createFriendRequest')
-  create(@MessageBody() createFriendRequestDto: CreateFriendRequestDto) {
-    return this.server.emit(typeof createFriendRequestDto);
+  async create(@MessageBody() createFriendRequestDto: CreateFriendRequestDto) {
+    const request = 'request-' + createFriendRequestDto.senderId;
+    return this.server.emit(
+      request,
+      await this.friendRequestService.create(createFriendRequestDto),
+    );
   }
 
   @SubscribeMessage(':receiverId')
-  getFriendRequests(@MessageBody('receiverId') receiverId: number) {
-    return this.friendRequestService.getFriendRequests(receiverId);
+  async getFriendRequests(
+    @MessageBody('receiverId') createFriendRequestDto: CreateFriendRequestDto,
+  ) {
+    const request = 'request-' + createFriendRequestDto.receiverId;
+    return this.server.emit(
+      request,
+      await this.friendRequestService.getFriendRequests(
+        createFriendRequestDto.receiverId,
+      ),
+    );
   }
 
   @SubscribeMessage('findAllRequest')
