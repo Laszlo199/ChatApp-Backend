@@ -22,7 +22,7 @@ export class friendRequestGateway {
 
   @SubscribeMessage('createFriendRequest')
   async create(@MessageBody() createFriendRequestDto: CreateFriendRequestDto) {
-    const request = 'request-' + createFriendRequestDto.senderId;
+    const request = 'request-' + createFriendRequestDto.receiverId;
     return this.server.emit(
       request,
       await this.friendRequestService.create(createFriendRequestDto),
@@ -50,18 +50,5 @@ export class friendRequestGateway {
   @SubscribeMessage('findOneFriendRequest')
   findOne(@MessageBody() id: number) {
     return this.friendRequestService.findOne(id);
-  }
-
-  @SubscribeMessage('updateFriendRequest')
-  update(
-    @MessageBody() id: number,
-    updateFriendRequestDto: UpdateFriendRequestDto,
-  ) {
-    return this.friendRequestService.update(id, updateFriendRequestDto);
-  }
-
-  @SubscribeMessage('removeFriendRequest')
-  remove(@MessageBody() id: number) {
-    return this.friendRequestService.remove(id);
   }
 }
