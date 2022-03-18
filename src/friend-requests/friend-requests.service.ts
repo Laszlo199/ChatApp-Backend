@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
-import { FriendRequest } from './entitites/friend-request.entity';
+import { FriendRequest } from './entities/friend-request.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFriendRequestDto } from './dto/create-friend-request.dto';

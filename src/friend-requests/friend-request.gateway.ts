@@ -7,7 +7,6 @@ import {
 import { Server } from 'net';
 import { FriendRequestsService } from './friend-requests.service';
 import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
-import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
 
 @WebSocketGateway({
   cors: {

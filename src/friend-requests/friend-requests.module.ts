@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FriendRequest } from './entitites/friend-request.entity';
+import { FriendRequest } from './entities/friend-request.entity';
 import { FriendRequestsService } from './friend-requests.service';
 import { friendRequestGateway } from './friend-request.gateway';
 import { FriendRequestController } from './friend-request.controller';
