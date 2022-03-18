@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,24 +20,36 @@ export class UsersService {
     private requestRepository: Repository<FriendRequest>,
   ) {}
 
-  async create(user: CreateUserDto): Promise<User> {
-    return await this.userRepository.save(user);
+  /**
+   * its about semantics and good practises. therefore i decided to create an extra method for signing up
+   * @param createUserDto
+   */
+  signUp(createUserDto: CreateUserDto): Promise<User> {
+    return this.create(createUserDto);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  private async create(createUserDto: CreateUserDto): Promise<User> {
+    const { username, password } = createUserDto;
+    try {
+      return await this.userRepository.save({ username, password });
+    } catch (error) {
+      console.log(error.code);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  async signIn(createUserDto: CreateUserDto) {
+    const { username, password } = createUserDto;
+    const user = await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
 
-  update(id: number, UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    if (user && password === user.password) {
+      return user;
+    } else {
+      return null;
+    }
   }
 
   async getAllUsers(loggedUserId) {
@@ -47,25 +64,18 @@ export class UsersService {
       //CASE: FRIENDS
       await this.requestRepository
         .find({
-          where: {
-            senderId: user.id,
-            receiverId: loggedUserId,
-            isAccepted: true,
-          },
-        })
-        .then((result) => {
-          if (result.length > 0) {
-            status = FriendStatus.Friends;
-          }
-        });
-      //CASE: FRIENDS
-      await this.requestRepository
-        .find({
-          where: {
-            senderId: loggedUserId,
-            receiverId: user.id,
-            isAccepted: true,
-          },
+          where: [
+            {
+              senderId: user.id,
+              receiverId: loggedUserId,
+              isAccepted: true,
+            },
+            {
+              senderId: loggedUserId,
+              receiverId: user.id,
+              isAccepted: true,
+            },
+          ],
         })
         .then((result) => {
           if (result.length > 0) {
