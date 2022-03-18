@@ -1,9 +1,13 @@
 import { UpdateFriendRequestDto } from './dto/update-friend-request.dto';
 import { FriendRequestsService } from './friend-requests.service';
-import { Body, Delete, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Inject, Param, Patch } from '@nestjs/common';
 
+@Controller('friendRequest')
 export class FriendRequestController {
-  constructor(private readonly friendService: FriendRequestsService) {}
+  constructor(
+    @Inject('FriendRequestService')
+    private readonly friendService: FriendRequestsService,
+  ) {}
 
   @Patch('/updateRequest')
   update(
