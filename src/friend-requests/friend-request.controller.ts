@@ -4,10 +4,7 @@ import { Body, Controller, Delete, Inject, Param, Patch } from '@nestjs/common';
 
 @Controller('friendRequest')
 export class FriendRequestController {
-  constructor(
-    @Inject('FriendRequestService')
-    private readonly friendService: FriendRequestsService,
-  ) {}
+  constructor(private readonly friendService: FriendRequestsService) {}
 
   @Patch('/updateRequest')
   update(
