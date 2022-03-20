@@ -39,4 +39,9 @@ export class UsersController {
   GetOne(@Param('id') id: number) {
     return this.usersService.getUser(+id);
   }
+
+  @Get()
+  FindAll() {
+    return this.usersService.findAll();
+  }
 }

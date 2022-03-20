@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  Delete, Put,
 } from '@nestjs/common';
 import { FriendRequestsService } from './friend-requests.service';
 import { CreateFriendRequestDto } from './dto/create-friend-request.dto';
@@ -30,16 +30,17 @@ export class FriendRequestsController {
     return this.friendRequestsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFriendRequestDto: UpdateFriendRequestDto,
-  ) {
-    return this.friendRequestsService.update(+id, updateFriendRequestDto);
+  /**
+   * only used to change isAccepted value from false to true when request is accepted
+   * @param id
+   */
+  @Put(':id')
+  update(@Param('id') id: number) {
+    return this.friendRequestsService.update(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.friendRequestsService.remove(+id);
   }
 }
