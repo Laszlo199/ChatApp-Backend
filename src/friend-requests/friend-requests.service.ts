@@ -12,9 +12,7 @@ export class FriendRequestsService {
     private friendRequestRepo: Repository<FriendRequest>,
   ) {}
 
-  async create(
-    createFriendRequestDto: CreateFriendRequestDto,
-  ): Promise<FriendRequest> {
+  async create(createFriendRequestDto: CreateFriendRequestDto) {
     const { senderId, receiverId, isAccepted } = createFriendRequestDto;
     try {
       return this.friendRequestRepo.save({ senderId, receiverId, isAccepted });
@@ -27,12 +25,12 @@ export class FriendRequestsService {
     try {
       return this.friendRequestRepo.findOne(receiverId);
     } catch (error) {
-      console.log('Woops');
+      console.log('Wops');
     }
   }
 
   async findAll() {
-    return 'hmm';
+    return this.friendRequestRepo.find();
   }
 
   findOne(id: number) {
