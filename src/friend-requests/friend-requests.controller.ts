@@ -30,16 +30,17 @@ export class FriendRequestsController {
     return this.friendRequestsService.findOne(+id);
   }
 
+  /**
+   * only used to change isAccepted value from false to true when request is accepted
+   * @param id
+   */
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateFriendRequestDto: UpdateFriendRequestDto,
-  ) {
-    return this.friendRequestsService.update(+id, updateFriendRequestDto);
+  update(@Param('id') id: number) {
+    return this.friendRequestsService.update(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.friendRequestsService.remove(+id);
   }
 }

@@ -24,11 +24,15 @@ export class FriendRequestsService {
     return `This action returns a #${id} friendRequest`;
   }
 
-  update(id: number, updateFriendRequestDto: UpdateFriendRequestDto) {
-    return `This action updates a #${id} friendRequest`;
+  async update(id: number) {
+    const requestToUpdate = await this.requestRepository.findOne({ id: id });
+    requestToUpdate.isAccepted = true;
+    return await this.requestRepository.save(requestToUpdate);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} friendRequest`;
+  async remove(id: number) {
+    const requestToRemove = await this.requestRepository.findOne({ id: id });
+    await this.requestRepository.remove(requestToRemove);
+    return requestToRemove;
   }
 }

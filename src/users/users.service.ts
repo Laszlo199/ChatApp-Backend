@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -127,5 +122,9 @@ export class UsersService {
 
   async getUser(number: number) {
     return await this.userRepository.findOne({ id: number });
+  }
+
+  async findAll() {
+    return await this.userRepository.find();
   }
 }
