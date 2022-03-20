@@ -8,6 +8,7 @@ import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { Server } from 'socket.io';
+import { TypingDto } from './dto/typing.dto';
 
 @WebSocketGateway({ cors: true })
 export class ChatsGateway {
@@ -21,23 +22,9 @@ export class ChatsGateway {
     this.server.emit(createChatDto.roomName, createChatDto);
   }
 
-  @SubscribeMessage('findAllChats')
-  findAll() {
-    return this.chatsService.findAll();
+  @SubscribeMessage('typing')
+  setTyping(@MessageBody() typingEvent: TypingDto) {
+    this.server.emit((typingEvent.roomName+'-typing'), typingEvent);
   }
 
-  @SubscribeMessage('findOneChat')
-  findOne(@MessageBody() id: number) {
-    return this.chatsService.findOne(id);
-  }
-
-  @SubscribeMessage('updateChat')
-  update(@MessageBody() updateChatDto: UpdateChatDto) {
-    return this.chatsService.update(updateChatDto.id, updateChatDto);
-  }
-
-  @SubscribeMessage('removeChat')
-  remove(@MessageBody() id: number) {
-    return this.chatsService.remove(id);
-  }
 }

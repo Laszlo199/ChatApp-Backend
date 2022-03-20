@@ -124,4 +124,8 @@ export class UsersService {
 
     return users;
   }
+
+  async getUser(number: number) {
+    return await this.userRepository.findOne({ id: number });
+  }
 }
